@@ -16,7 +16,17 @@ const collectionSchema = new mongoose.Schema({
     required: true
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toObject: {
+    // remove desired fields when we call `.toObject`
+    transform: (_doc, collection) => {
+      delete collection._id
+      delete collection.createdAt
+      delete collection.updatedAt
+      delete collection.__v
+      return collection
+    }
+  }
 })
 
 module.exports = mongoose.model('Collection', collectionSchema)

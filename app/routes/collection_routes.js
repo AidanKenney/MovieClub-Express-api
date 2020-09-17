@@ -30,10 +30,19 @@ const router = express.Router()
 
 // INDEX (working)
 router.get('/collections', requireToken, (req, res, next) => {
+  // variable requestMaker is id of the user making request
+  // const requestMaker = req.user._id
   Collection.find()
-    .populate('owner')
+    .populate('owner', 'email')
+    // .then(collections => {
+    //   collections.forEach((collection) => {
+    //     const owner = collection.owner._id ? collection.owner._id : collection.owner
+    //     if (requestMaker === owner) {
+    //       return collections.map(collection => collection.toObject())
+    //     }
+    //   })
+    // })
     .then(collections => {
-      // map an array of collections as POJOs
       return collections.map(collection => collection.toObject())
     })
     // respond with status 200 and the JSON of collections
