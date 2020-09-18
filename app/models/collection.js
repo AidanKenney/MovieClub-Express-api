@@ -20,7 +20,7 @@ const collectionSchema = new mongoose.Schema({
   toObject: {
     // remove desired fields when we call `.toObject`
     transform: (_doc, collection) => {
-      delete collection._id
+      // delete collection._id
       delete collection.createdAt
       delete collection.updatedAt
       delete collection.__v
