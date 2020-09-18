@@ -73,9 +73,11 @@ router.post('/collections', requireToken, (req, res, next) => {
   // set owner of new collection to be current user
   req.body.collection.owner = req.user.id
   Collection.create(req.body.collection)
+    // .populate('owner', 'email')
     .then(collection => {
       res.status(201).json({ collection: collection.toObject() })
     })
+    .catch(next)
 })
 
 // UPDATE (working, and do not need all fields filled)
