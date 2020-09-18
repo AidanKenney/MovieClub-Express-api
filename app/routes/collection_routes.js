@@ -60,6 +60,10 @@ router.get('/collections/:id', requireToken, (req, res, next) => {
 
   Collection.findById(req.params.id)
     .then(handle404)
+    .then(collection => {
+      requireOwnership(req, collection)
+      return collection
+    })
     .then(collection => res.status(200).json({ collection: collection.toObject() }))
     .catch(next)
 })
