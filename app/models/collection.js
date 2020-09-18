@@ -1,6 +1,9 @@
 // require mongoose
 const mongoose = require('mongoose')
 
+// require movieSchema so it can be incorporated as subdocument
+const movieSchema = require('./movie')
+
 const collectionSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -10,6 +13,7 @@ const collectionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  movies: [movieSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
