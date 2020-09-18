@@ -16,6 +16,8 @@ const handle404 = customErrors.handle404
 // that's owned by someone else
 const requireOwnership = customErrors.requireOwnership
 
+const requireOwnershipBool = customErrors.requireOwnershipBool
+
 // this is middleware that will remove blank fields from `req.body`, e.g.
 // { example: { title: '', text: 'foo' } } -> { example: { text: 'foo' } }
 const removeBlanks = require('../../lib/remove_blank_fields')
@@ -32,20 +34,21 @@ const router = express.Router()
 router.get('/collections', requireToken, (req, res, next) => {
   // variable requestMaker is id of the user making request
   // const requestMaker = req.user._id
+  let arrayOfOwnersCollections = []
   Collection.find()
     .populate('owner', 'email')
-    // .then(collections => {
-    //   collections.forEach((collection) => {
-    //     const owner = collection.owner._id ? collection.owner._id : collection.owner
-    //     if (requestMaker === owner) {
-    //       return collections.map(collection => collection.toObject())
-    //     }
-    //   })
-    // })
     .then(collections => {
-      return collections.map(collection => collection.toObject())
+      // iterate through array of all collections
+      collections.forEach(collection => {
+        // if requireOwnershipBool returns true (ie that collection is owned by
+        // user who is requesting)
+        if (requireOwnershipBool(req, collection)) {
+          // push that collection into blank array above
+          arrayOfOwnersCollections.push(collection.toObject())
+        }
+      })
+      return arrayOfOwnersCollections
     })
-    // respond with status 200 and the JSON of collections
     .then(collections => res.status(200).json({ collections }))
     // if error, handle it
     .catch(next)
