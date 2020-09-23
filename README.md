@@ -1,6 +1,7 @@
 This is the server side for the web application "Movie Club", a site for users
 to create and store movie collections of their own design. The server was built with
 JavaScript, Node, Express, and uses MongoDB and Mongoose for database storage.
+The deployed site can be found here: https://fierce-forest-42234.herokuapp.com/
 
 This server interacts with a client application I built with JavaScript, HTML5,
 Bootstrap, and SCSS. The links to the repo and deployed site can be found here:
